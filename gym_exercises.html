@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <title>Упражнения для зала</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Основные стили, как на главном экране */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dcdcdc; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .mobile-frame {
+            width: 100%;
+            max-width: 430px;
+            height: 100vh;
+            background-color: #F9F4F2;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Заголовок с кнопкой "назад" */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 16px;
+            flex-shrink: 0;
+            border-bottom: 1px solid #e5e5ea;
+        }
+
+        header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .back-button {
+            font-size: 16px;
+            color: #007AFF; /* Стандартный синий цвет для iOS */
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .back-button i {
+            margin-right: 5px;
+        }
+
+        /* Основной контент */
+        main {
+            padding: 15px 16px;
+            overflow-y: auto; /* Включаем скролл для списка */
+            flex-grow: 1;
+        }
+        main::-webkit-scrollbar {
+            display: none; /* Прячем скроллбар */
+        }
+
+        /* Стили для баннера */
+        .banner-container {
+            margin-bottom: 15px; /* Отступ под баннером */
+        }
+
+        .banner-image {
+            width: 100%;
+            border-radius: 12px; /* Скругляем углы как у карточек */
+            display: block; /* Убираем лишний отступ под картинкой */
+        }
+        
+        /* Стили для списка упражнений */
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 15px; /* Добавим отступ снизу */
+        }
+
+        .exercise-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 15px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        
+        .exercise-item:active {
+            background-color: #f0f0f0;
+            transform: scale(0.98);
+        }
+        
+        .exercise-item .play-icon {
+            color: #c7c7cc; /* Серый цвет для иконки "play" */
+            font-size: 14px;
+        }
+
+        /* Футер и нижнее меню */
+        footer {
+            flex-shrink: 0;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #E5E5EA;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8A8A8E;
+            text-decoration: none;
+            font-size: 10px;
+        }
+
+        .nav-item i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: #6a6d66;
+        }
+        
+        .nav-item.active i {
+             color: #6a6d66;
+        }
+
+        /* Стили для видеоплеера (модальное окно) */
+        .video-player-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none; /* По умолчанию скрыт */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 430px;
+            background-color: #000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .close-video-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-frame">
+        <header>
+            <a href="main.html" class="back-button">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Назад</span>
+            </a>
+            <h1>Упражнения для зала</h1>
+        </header>
+
+        <main>
+            <!-- Блок с баннером -->
+            <div class="banner-container">
+                <img src="banner1.png" alt="Баннер" class="banner-image">
+            </div>
+            
+            <div class="exercise-list" id="exerciseList">
+                <!-- Список будет сгенерирован с помощью JavaScript -->
+            </div>
+        </main>
+        
+        <footer>
+            <nav class="bottom-nav">
+                <a href="main.html" class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="gym_exercises.html" class="nav-item active"> <!-- Ссылка на эту же страницу -->
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <span>Упражнения</span>
+                </a>
+                <a href="https://wa.me/79772729099" class="nav-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Связь со мной</span>
+                </a>
+            </nav>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для видеоплеера -->
+    <div class="video-player-overlay" id="videoPlayerOverlay">
+        <div class="video-container">
+            <button class="close-video-button" id="closeVideoButton">&times;</button>
+            <video id="exerciseVideo" controls controlsList="nodownload"></video>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const exercises = [
+                { name: 'Болгарские выпады', url: 'https://storage2.bothelp.io/myuppy/f3/f348/f348af08332664d24d66fa87f980ce72/3Bolgarskiy_vyipad.mp4' },
+                { name: 'Гиперэкстензия', url: 'https://storage2.bothelp.io/myuppy/ac/ac23/ac23013303014fccc2dbf9673430f324/7Giperekstenziya.mp4' },
+                { name: 'Диагональные скручивания', url: 'https://storage2.bothelp.io/myuppy/a0/a0b3/a0b34f293d91a6322282609aa38a9ac5/5Diagonal_nyie_skruchivaniya__kosyie_.mp4' },
+                { name: 'Жим гантелей лёжа на наклонной скамье', url: 'https://storage2.bothelp.io/myuppy/a5/a53f/a53f0e2e150c373cd18d36917c086b7f/3_Jim_ganteley_leja_na_skam_e.mp4' },
+                { name: 'Жим гантелей сидя над головой', url: 'https://storage2.bothelp.io/myuppy/0c/0cc0/0cc0e2ed1db0a700d87e707829f930dc/1_Jim_ganteley_nad_golovoy.mp4' },
+                { name: 'Жим ногами', url: 'https://storage2.bothelp.io/myuppy/a1/a1ad/a1ad4afb6a07c56be08c21ca8218032b/5_jim_nogami.mp4' },
+                { name: 'Махи ногой', url: 'https://storage2.bothelp.io/myuppy/2b/2b93/2b93ccc4d3fb087010607e0770766ad1/3_Mahi_nogoy.mp4' },
+                { name: 'Махи ногой в кроссовере', url: 'https://storage2.bothelp.io/myuppy/2b/2b93/2b93ccc4d3fb087010607e0770766ad1/4Mahi_nogoy.mp4' },
+                { name: 'Махи через стороны стоя', url: 'https://storage2.bothelp.io/myuppy/bf/bf1e/bf1e7af2d89eb3c64cb31666ba0315fe/2_Mahi_v_storonyi.mp4' },
+                { name: 'Мостик с резинкой', url: 'https://storage2.bothelp.io/myuppy/61/6149/6149d5883d81d04385ecacc16e5da650/21Mostik_s_rezinkoy.mp4' },
+                { name: 'Обратные скручивания', url: 'https://storage2.bothelp.io/myuppy/0b/0b20/0b20130048b1835de68fba4ea58d06d5/3Obratnyie_skruchivaniya.mp4' },
+                { name: 'Отведение ноги в кроссовере', url: 'https://storage2.bothelp.io/myuppy/ac/ac34/ac34b38da89308043440b72937ece106/6Otvedenie_nogi_v_storonu_v_krossovere.mp4' },
+                { name: 'Отведения рук косичкой', url: 'https://storage2.bothelp.io/myuppy/76/7664/7664067d9f881dec2a3171c1142e085b/3Otvedenie_ruk_s_kosichkoy.mp4' },
+                { name: 'Отведения ног сидя', url: 'https://storage2.bothelp.io/myuppy/c8/c83a/c83ad5b0efbad5e5f7ef03b90e71f093/2_otvedenie_nog_sidya.mp4' },
+                { name: 'Отжимания (обратные)', url: 'https://storage2.bothelp.io/myuppy/fd/fdce/fdce910dad17035fe1cb2a477921ae04/4_Obratnyie_otjimaniya.mp4' },
+                { name: 'Подтягивание на гравитроне', url: 'https://storage2.bothelp.io/myuppy/78/7840/784057fdb1a7dedb0f27b30239a3dc8e/4Podtyagivanie_na_gravitrone.mp4' },
+                { name: 'Подъем ног', url: 'https://storage2.bothelp.io/myuppy/7c/7c12/7c12e476f72d92a99da66855b22835a8/6_Pod_em_nog.mp4' },
+                { name: 'Приседания с гантелей', url: 'https://storage2.bothelp.io/myuppy/e6/e6ee/e6ee16bf92b97f0865051ad967f11af3/1Prisedanie_s_shirokoy_postavkoy_nog.mp4' },
+                { name: 'Приседания на тренажере', url: 'https://storage2.bothelp.io/myuppy/b4/b4c5/b4c5933c9edb64aa84cfa9699b16cce9/3_prisedaniya_na_trenajore.mp4' },
+                { name: 'Разведение ног', url: 'https://storage2.bothelp.io/myuppy/c8/c83a/c83ad5b0efbad5e5f7ef03b90e71f093/4Razvedenie_nog.mp4' },
+                { name: 'Разведение рук', url: 'https://storage2.bothelp.io/myuppy/ef/efd2/efd251a727bf82b13552fed1c5b0457b/2Razvedenie_ruk.mp4' },
+                { name: 'Разведение рук в сторону', url: 'https://storage2.bothelp.io/myuppy/bf/bf1e/bf1e7af2d89eb3c64cb31666ba0315fe/2Razvedenie_ruk_v_storonu.mp4' },
+                { name: 'Разгибание с косичкой', url: 'https://storage2.bothelp.io/myuppy/78/78b8/78b80047cf2cdda7883ae560dc0bbb2b/2Razgibanie_s_kosichkoy.mp4' },
+                { name: 'Румынская тяга', url: 'https://storage2.bothelp.io/myuppy/47/4738/4738f1ae8d30430d5a1b35830764fa86/1Rumyinskaya_tyaga.mp4' },
+                { name: 'Румынская тяга на 1 ноге', url: 'https://storage2.bothelp.io/myuppy/47/47a0/47a091f182003a220819e1a03f35d0d7/5Rumyinskaya_tyaga_na_odnoy_noge.mp4' },
+                { name: 'Сведение ног в тренажере', url: 'https://storage2.bothelp.io/myuppy/17/172f/172fcb868958c4ad9ac6148946d33362/5Svedenie_nog.mp4' },
+                { name: 'Сгибание ног', url: 'https://storage2.bothelp.io/myuppy/f3/f321/f321e6d84a430d2be55d98d00666b789/5Sgibanie_nog.mp4' },
+                { name: 'Сведение рук с гантелями', url: 'https://storage2.bothelp.io/myuppy/84/84c2/84c290bb1a85ed328e03cbb43a083893/4Sgibanie_ruk_s_gantelyami.mp4' },
+                { name: 'Скручивания на скамье', url: 'https://storage2.bothelp.io/myuppy/7f/7f1f/7f1fddef93892c6242b4cf9d54fc6ffb/6Skruchivanie_na_skam_e.mp4' },
+                { name: 'Толчки лёжа', url: 'https://storage2.bothelp.io/myuppy/f5/f532/f532bcc6580e22e473020bdd1e0f29f5/2_Tolchki_leja__lyagushka_.mp4' },
+                { name: 'Трицепс с канатной рукоятью', url: 'https://storage2.bothelp.io/myuppy/ca/ca18/ca189075af0c4daba7e611562cef165a/5_Tritseps_s_kanatnoy_rukoyat_yu.mp4' },
+                { name: 'Тяга верхнего  блока', url: 'https://storage2.bothelp.io/myuppy/49/4999/4999bdda3576de81fec76b301503a50e/1Tyaga_verhnego_bloka.mp4' },
+                { name: 'Тяга блока к поясу', url: 'https://storage2.bothelp.io/myuppy/9b/9b6d/9b6d63808bdd77885d5dee7757e289df/8Tyaga_bloka_k_poyasu.mp4' },
+                { name: 'Тяга к груди', url: 'https://storage2.bothelp.io/myuppy/49/4999/4999bdda3576de81fec76b301503a50e/5Tyaga_k_grudi_verhnego_bloka.mp4' },
+                { name: 'Фроги', url: 'https://storage2.bothelp.io/myuppy/32/32c9/32c933f0feec73a0c470033d21e51d78/9Froggi.mp4' },
+                { name: 'Ягодичный мост', url: 'https://storage2.bothelp.io/myuppy/df/df76/df766055f5bc5ab391469121a285ffbb/3YAgodichnyiy_most.mp4' }
+            ];
+
+            const exerciseListContainer = document.getElementById('exerciseList');
+            const videoPlayerOverlay = document.getElementById('videoPlayerOverlay');
+            const exerciseVideo = document.getElementById('exerciseVideo');
+            const closeVideoButton = document.getElementById('closeVideoButton');
+
+            // Создаем элементы списка
+            exercises.forEach(exercise => {
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'exercise-item';
+                a.dataset.videoSrc = exercise.url;
+
+                const span = document.createElement('span');
+                span.textContent = exercise.name;
+                
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-play play-icon';
+
+                a.appendChild(span);
+                a.appendChild(icon);
+                exerciseListContainer.appendChild(a);
+
+                // Добавляем обработчик клика
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const videoSrc = this.dataset.videoSrc;
+                    exerciseVideo.src = videoSrc;
+                    videoPlayerOverlay.style.display = 'flex';
+                    exerciseVideo.play();
+                });
+            });
+
+            // Обработчик для кнопки закрытия
+            closeVideoButton.addEventListener('click', function() {
+                videoPlayerOverlay.style.display = 'none';
+                exerciseVideo.pause();
+                exerciseVideo.src = ''; // Сбрасываем источник
+            });
+
+            // Закрытие по клику на фон
+            videoPlayerOverlay.addEventListener('click', function(e) {
+                if (e.target === videoPlayerOverlay) {
+                    videoPlayerOverlay.style.display = 'none';
+                    exerciseVideo.pause();
+                    exerciseVideo.src = '';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

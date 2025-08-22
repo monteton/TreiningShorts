@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>Питание</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dcdcdc; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .mobile-frame {
+            width: 100%;
+            max-width: 430px;
+            height: 100vh;
+            background-color: #F9F4F2;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        header {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 16px;
+            flex-shrink: 0;
+            border-bottom: 1px solid #e5e5ea;
+        }
+        .back-button {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #007AFF;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .back-button i {
+            margin-right: 5px;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        main {
+            padding: 15px 16px;
+            padding-bottom: 80px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        main::-webkit-scrollbar {
+            display: none;
+        }
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .menu-button {
+            background-color: #ffffff;
+            color: #000;
+            border-radius: 18px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 20px 15px;
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            min-height: 120px;
+        }
+        .menu-button:active {
+            transform: scale(0.97);
+            background-color: #f0f0f0;
+        }
+        .menu-button i {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #b4f24c;
+        }
+        .image-container {
+            margin-top: 20px;
+        }
+        .content-image {
+            width: 100%;
+            display: block;
+            border-radius: 18px;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        footer {
+            flex-shrink: 0;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(255,255,255,0.9);
+            border-top: 1px solid #E5E5EA;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8A8A8E;
+            text-decoration: none;
+            font-size: 10px;
+        }
+        .nav-item i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .nav-item.active {
+            color: #6a6d66;
+        }
+        .nav-item.active i {
+            color: #6a6d66;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-frame">
+        <header>
+            <a href="main.html" class="back-button" aria-label="Назад">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Назад</span>
+            </a>
+            <h1>Питание</h1>
+        </header>
+
+        <main>
+            <div class="menu-container">
+                <a href="cal.html" class="menu-button">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span>Подсчет калорийности</span>
+                </a>
+                <a href="kzbu.html" class="menu-button">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Индивидуальный разбор КБЖУ</span>
+                </a>
+                <a href="individual.html" class="menu-button">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span>Рацион под свои запросы</span>
+                </a>
+                <a href="foodvideo.html" class="menu-button">
+                    <i class="fa-solid fa-video"></i>
+                    <span>Полезное видео</span>
+                </a>
+                <!-- ИЗМЕНЕННАЯ КНОПКА С ССЫЛКОЙ НА PDF -->
+                <a href="1300call.pdf" class="menu-button" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Меню питания 1300 кал</span>
+                </a>
+            </div>
+            <div class="image-container">
+                <img src="food.png" alt="Питание" class="content-image">
+            </div>
+        </main>
+        
+        <footer>
+            <nav class="bottom-nav" role="navigation" aria-label="Основное меню">
+                <a href="main.html" class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="https://wa.me/79772729099" class="nav-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Связь со мной</span>
+                </a>
+            </nav>
+        </footer>
+    </div>
+
+</body>
+</html>
