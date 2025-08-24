@@ -177,7 +177,6 @@
                     <i class="fa-solid fa-video"></i>
                     <span>Полезное видео</span>
                 </a>
-                <!-- ИЗМЕНЕННАЯ КНОПКА С ONCLICK -->
                 <button class="menu-button" onclick="openPDF('1300call.pdf')">
                     <i class="fa-solid fa-book-open"></i>
                     <span>Меню питания 1300 кал</span>
@@ -202,33 +201,29 @@
         </footer>
     </div>
 
-    <!-- === КОД ДЛЯ ПРОСМОТРА PDF (КАК В РАБОЧЕМ ПРИМЕРЕ) === -->
-
-    <!-- 1. Контейнер для просмотра PDF -->
+    <!-- Контейнер для просмотра PDF -->
     <div id="pdf-viewer-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 1000;">
         <iframe id="pdf-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
         <button id="close-pdf-viewer" style="position: absolute; top: 15px; right: 15px; font-size: 24px; color: white; background: none; border: none; cursor: pointer; width: 44px; height: 44px;">&times;</button>
     </div>
 
-    <!-- 2. JavaScript для управления окном -->
+    <!-- JavaScript для управления окном -->
     <script>
         const viewerContainer = document.getElementById('pdf-viewer-container');
         const pdfIframe = document.getElementById('pdf-iframe');
         const closeButton = document.getElementById('close-pdf-viewer');
 
-        // Функция, которая вызывается из onclick
         function openPDF(fileName) {
             if (fileName) {
-                // Путь к viewer.html внутри папки pdf-viewer
-                // ../${fileName} - путь к PDF в корневой папке
-                const viewerUrl = `pdf-viewer/viewer.html?file=../${fileName}`;
+                // *** ВОТ КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ! ***
+                // Путь к viewer.html внутри папки web.
+                const viewerUrl = `web/viewer.html?file=../${fileName}`;
                 
                 pdfIframe.src = viewerUrl;
                 viewerContainer.style.display = 'block';
             }
         }
 
-        // Обработчик на кнопку закрытия
         closeButton.addEventListener('click', function() {
             viewerContainer.style.display = 'none';
             pdfIframe.src = ''; 
