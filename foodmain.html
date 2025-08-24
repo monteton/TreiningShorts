@@ -86,7 +86,6 @@
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             min-height: 120px;
-            cursor: pointer; /* Добавим для наглядности */
         }
         .menu-button:active {
             transform: scale(0.97);
@@ -176,8 +175,8 @@
                     <i class="fa-solid fa-video"></i>
                     <span>Полезное видео</span>
                 </a>
-                <!-- ИЗМЕНЕННАЯ КНОПКА ДЛЯ ОТКРЫТИЯ PDF В ОКНЕ -->
-                <a class="menu-button open-pdf-link" data-pdf-file="1300call.pdf">
+                <!-- ИЗМЕНЕННАЯ КНОПКА С ССЫЛКОЙ НА PDF.JS VIEWER -->
+                <a href="viewer.html?file=1300call.pdf" class="menu-button">
                     <i class="fa-solid fa-book-open"></i>
                     <span>Меню питания 1300 кал</span>
                 </a>
@@ -200,45 +199,6 @@
             </nav>
         </footer>
     </div>
-
-    <!-- === ДОБАВЛЕННЫЙ КОД ДЛЯ ПРОСМОТРА PDF === -->
-
-    <!-- 1. Контейнер для просмотра PDF (всплывающее окно) -->
-    <div id="pdf-viewer-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 1000;">
-        <iframe id="pdf-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
-        <button id="close-pdf-viewer" style="position: absolute; top: 15px; right: 15px; font-size: 24px; color: white; background: none; border: none; cursor: pointer; width: 44px; height: 44px;">&times;</button>
-    </div>
-
-    <!-- 2. JavaScript для управления окном -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const viewerContainer = document.getElementById('pdf-viewer-container');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            const closeButton = document.getElementById('close-pdf-viewer');
-            const pdfLinks = document.querySelectorAll('.open-pdf-link');
-
-            pdfLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const pdfFile = this.getAttribute('data-pdf-file');
-                    if (pdfFile) {
-                        // Убедитесь, что у вас есть папка 'pdf-viewer' с файлами из библиотеки PDF.js
-                        // и сам PDF-файл лежит в корне проекта
-                        const viewerUrl = `pdf-viewer/viewer.html?file=../${pdfFile}`;
-                        
-                        pdfIframe.src = viewerUrl;
-                        viewerContainer.style.display = 'block';
-                    }
-                });
-            });
-
-            closeButton.addEventListener('click', function() {
-                viewerContainer.style.display = 'none';
-                pdfIframe.src = ''; // Очищаем iframe
-            });
-        });
-    </script>
-    <!-- === КОНЕЦ ДОБАВЛЕННОГО КОДА === -->
 
 </body>
 </html>
