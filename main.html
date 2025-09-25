@@ -21,7 +21,6 @@
             min-height: 100vh;
         }
 
-
         /* Контейнер, имитирующий экран мобильного телефона */
         .mobile-frame {
             width: 100%;
@@ -30,9 +29,9 @@
             background-color: #F9F4F2;
             position: relative;
             overflow: hidden; /* Изменено для предотвращения двойного скролла */
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             display: flex; /* Включаем Flexbox */
             flex-direction: column; /* Располагаем элементы в колонку */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         }
         
         header {
@@ -42,25 +41,21 @@
             flex-shrink: 0; /* Заголовок не будет сжиматься */
         }
 
-
         h1 {
             font-size: 24px;
             margin: 0;
         }
-
 
         main {
             padding: 0 16px;
             flex-shrink: 0; /* Основной контент не будет сжиматься */
         }
 
-
         .menu-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
-
 
         .menu-button {
             background-color: #ffffff;
@@ -80,12 +75,10 @@
             min-height: 120px;
         }
 
-
         .menu-button:active {
             transform: scale(0.97);
             background-color: #f0f0f0;
         }
-
 
         .menu-button i {
             font-size: 24px;
@@ -130,7 +123,6 @@
             backdrop-filter: blur(10px);
         }
 
-
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -140,12 +132,10 @@
             font-size: 10px;
         }
 
-
         .nav-item i {
             font-size: 24px;
             margin-bottom: 4px;
         }
-
 
         .nav-item.active {
             color: #6a6d66;
@@ -154,19 +144,13 @@
 </head>
 <body>
 
-
     <div class="mobile-frame">
         <header>
             <h1>Главное меню</h1>
         </header>
 
-
         <main>
             <div class="menu-container">
-                <a href="about.html" class="menu-button">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Приветствие</span>
-                </a>
                 <a href="home_exercises.html" class="menu-button">
                     <i class="fa-solid fa-house-chimney-user"></i>
                     <span>Упражнения для дома</span>
@@ -178,6 +162,22 @@
                 <a href="foodmain.html" class="menu-button">
                     <i class="fa-solid fa-utensils"></i>
                     <span>Питание</span>
+                </a>
+                <a href="results.html" class="menu-button">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span>Всё для лучшего результата</span>
+                </a>
+                <a href="motivation.html" class="menu-button">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Мотивация</span>
+                </a>
+                <a href="selfcare.html" class="menu-button">
+                    <i class="fa-solid fa-seedling"></i>
+                    <span>Уход за собой</span>
+                </a>
+                <a href="faq.html" class="menu-button">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Ответы на вопросы</span>
                 </a>
             </div>
         </main>
@@ -201,7 +201,6 @@
             </nav>
         </footer>
     </div>
-
 
 </body>
 </html>

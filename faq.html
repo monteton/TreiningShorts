@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ответы на вопросы</title>
+    <!-- ИЗМЕНЕНИЕ: Подключена библиотека иконок для нового меню -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: #faf9f6;
+            color: #222;
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            /* Отступ снизу под новое меню */
+            padding: 16px 16px 100px 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        p {
+            font-size: 1em;
+            color: #444;
+            text-align: center;
+            margin: 0 0 16px 0;
+        }
+        .pdf-btn {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #222;
+            font-size: 1.12em;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            max-width: 260px;
+            margin: 16px auto;
+            border: none;
+            cursor: pointer;
+        }
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44,62,80,0.13);
+        }
+        #pdf-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 16px 0;
+            display: none;
+        }
+        #pdf-canvas {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: #fff;
+        }
+        .pdf-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .pdf-controls button {
+            background: #6c4dd6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        /* ИЗМЕНЕНИЕ: Новые стили для нижнего меню */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 430px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #E5E5EA;
+            padding-top: 10px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8A8A8E;
+            text-decoration: none;
+            font-size: 10px;
+        }
+        .nav-item i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .nav-item.active {
+            color: #7f817c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <h1>Ответы на вопросы</h1>
+        <p>В этом файле собраны ответы на самые задаваемые вопросы.</p>
+        <button class="pdf-btn" id="show-pdf-btn">Открыть PDF</button>
+        <a href="main.html" class="back-button">
+                <i class="fa-solid fa-chevron-left"></i>
+                НАЗАД
+                <a
+        
+        <div id="pdf-container">
+            <canvas id="pdf-canvas"></canvas>
+            <!-- ИЗМЕНЕНИЕ: Добавлен контейнер для счетчика страниц -->
+            <div id="page-info" style="text-align: center; margin-top: 10px;"></div>
+            <div class="pdf-controls">
+                <button id="prev-page">Предыдущая</button>
+                <button id="next-page">Следующая</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ИЗМЕНЕНИЕ: Новый блок навигации -->
+    <footer>
+            <nav class="bottom-nav">
+                <a href="main.html" class="nav-item active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="https://wa.me/79772729099" class="nav-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Связь со мной</span>
+                </a>
+            </nav>
+        </footer>
+    <!-- Подключаем PDF.js из CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        
+        const pdfBtn = document.getElementById('show-pdf-btn');
+        const pdfContainer = document.getElementById('pdf-container');
+        const canvas = document.getElementById('pdf-canvas');
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+        const pageInfoEl = document.getElementById('page-info'); // Элемент для счетчика
+        
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        const scale = 1.5;
+        
+        function renderPage(num) {
+            pageRendering = true;
+            
+            pdfDoc.getPage(num).then(function(page) {
+                const viewport = page.getViewport({ scale: scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                const renderContext = {
+                    canvasContext: canvas.getContext('2d'),
+                    viewport: viewport
+                };
+                
+                const renderTask = page.render(renderContext);
+                
+                renderTask.promise.then(function() {
+                    pageRendering = false;
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+            
+            pageInfoEl.textContent = `Страница ${num} из ${pdfDoc.numPages}`;
+        }
+        
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+        
+        function onPrevPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+        
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+        
+        pdfBtn.addEventListener('click', function() {
+            // ИЗМЕНЕНИЕ: Добавлена проверка, чтобы не загружать PDF повторно
+            if (pdfDoc) { 
+                pdfContainer.style.display = 'block';
+                return;
+            }
+
+            /// Путь к PDF-файлу
+            const pdfUrl = 'pdfs/faq.pdf';
+            
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                pdfContainer.style.display = 'block';
+                renderPage(pageNum);
+            }).catch(function(error) {
+                console.error('Ошибка при загрузке PDF:', error);
+                alert('Ошибка при загрузке PDF. Проверьте консоль для подробностей.');
+            });
+        });
+        
+        prevBtn.addEventListener('click', onPrevPage);
+        nextBtn.addEventListener('click', onNextPage);
+    </script>
+</body>
+</html>
+
