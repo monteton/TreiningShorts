@@ -28,7 +28,7 @@
             height: 100vh;
             background-color: #F9F4F2;
             position: relative;
-            overflow: hidden; /* Изменено для предотвращения двойного скролла */
+            overflow-y: auto; /* ИЗМЕНЕНО: Включаем вертикальную прокрутку при необходимости */
             display: flex; /* Включаем Flexbox */
             flex-direction: column; /* Располагаем элементы в колонку */
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -55,6 +55,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
+            padding-bottom: 20px; /* Добавлен отступ снизу */
         }
 
         .menu-button {
@@ -87,14 +88,15 @@
             color: #b4f24c;
         }
 
-        /* Новый контейнер для изображения */
+        /* Контейнер для изображения */
         .image-container {
             flex-grow: 1; /* Позволяет контейнеру занять все свободное место */
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px 16px;
+            padding: 0 16px 20px; /* Изменены отступы */
             overflow: hidden;
+            min-height: 250px; /* Минимальная высота для изображения */
         }
 
         /* Стили для самого изображения */
@@ -110,6 +112,8 @@
         /* Нижняя навигация */
         footer {
             flex-shrink: 0; /* Футер не будет сжиматься */
+            position: sticky; /* Делаем футер "липким" */
+            bottom: 0; /* Прилепляем к низу */
         }
 
         .bottom-nav {
@@ -118,7 +122,8 @@
             background-color: rgba(255, 255, 255, 0.9);
             border-top: 1px solid #E5E5EA;
             padding-top: 10px;
-            padding-bottom: 20px;
+            padding-bottom: 20px; /* Увеличим для safe-area на iOS */
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
